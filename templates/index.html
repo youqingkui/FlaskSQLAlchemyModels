@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% import 'form.html' as form %}
+{% block title %}laoli SQLAlchemy shine{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h3>自动映射SQLAlchemy</h3>
+</div>
+<form class="form-horizontal" role="form">
+    {{form.input('Host', 'host', 'col-md-4', 'localhost')}}
+    {{form.input('Name', 'name', 'col-md-4', 'root' )}}
+    {{form.input('Password', 'password', 'col-md-4')}}
+    {{form.input('Port', 'port', 'col-md-4', '3306')}}
+    <div class="form-group">
+        <label class="col-md-1 control-label">数据库</label>
+        <div class="col-md-4">
+            <select class="form-control" name="database" id="database">
+                <option>请选择数据库</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <a id="get_db" class="btn btn-default">获取数据库</a>
+        </div>
+    </div>
+</form>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script src="/static/javascripts/test.js"></script>
+{% endblock %}

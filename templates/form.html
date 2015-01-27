@@ -1,0 +1,13 @@
+{# form表单宏定义 #}
+
+{% macro input(labeltext, name, col, value='', type='text', isneed=False, errormsg='') -%}
+<div class="form-group">
+    <label class="control-label col-md-1">{{ labeltext }}</label>
+    <div class="{{ col }}">
+        <input class="form-control" type="{{ type }}" name="{{ name }}" id="{{ name }}" value="{{ value }}">
+        {% if isneed %}<span style="color: #ff4500">*</span>{% endif %}
+        {% if errormsg %}<span class="label label-important">{{ errormsg }}</span>{% endif %}
+    </div>
+</div>
+{%- endmacro %}
+
