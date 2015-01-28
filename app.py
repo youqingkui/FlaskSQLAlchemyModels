@@ -73,7 +73,71 @@ def db_list():
         if conn:
             conn.close()
 
-        return json.dumps(json_data)
+    return json.dumps(json_data)
+
+@app.route('/get_tb', methods = ['POST'])
+def get_tb():
+    """获取数据库表"""
+
+    form = request.form
+    db_name = form.get('db_name', '').strip()
+
+    conn = None
+    cur = None
+    try:
+        conn = MySQLdb.connect(
+            host=form.get('host', 'localhost'),
+            user=form.get('user', 'root'),
+            passwd=form.get('password', ''),
+            db=form.get('db_name', 'test'),
+            port=int(form.get('port', 3306)),
+        )
+        cur = conn.cursor()
+        cur.execute('show tables')
+        tb_list = cur.fetchall()
+        tbarr = []
+        for tb in tb_list:
+            tbname = tb[0]
+            tbarr.append(tbname)
+        json_data = {'ret':0, 'msg':'ok', 'data':tbarr}
+
+    except BaseException:
+        json_data = {'ret':10000, 'msg':'发生错误了', 'reqdata':form}
+
+    finally:
+        if cur:
+            cur.close()
+
+        if conn:
+            conn.close()
+
+    return json.dumps(json_data)
+
+
+@app.route('/get_sql_code')
+def get_sql_code():
+    """获取SQL代码"""
+
+    form = request.form
+    conn = None
+    cur = None
+    try:
+        table = form['table']
+        conn = MySQLdb.connect(
+            host=form.get('host', 'localhost'),
+            user=form.get('user', 'root'),
+            passwd=form.get('password', ''),
+            db=form.get('db_name'),
+            port=int(form.get('port', 3306)),
+        )
+        cur = conn.cursor()
+        cur.execute("desc `%s`" % table)
+        print(cur)
+        field_list = cur.fetchall()
+        print field_list
+    except:
+        pass
+
 
 
 
